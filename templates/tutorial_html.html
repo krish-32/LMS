@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EduSpark Course Tracker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+      }
+      .content-section {
+        margin-bottom: 30px;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 10px;
+      }
+      .content-section.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+      .quiz {
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px dashed #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>EduSpark - HTML Tutorial</h1>
+
+    <div id="content-sections"></div>
+
+    <script>
+      const contents = [
+        {
+          title: "1. Introduction to HTML",
+          body: "HTML stands for HyperText Markup Language. It's the standard markup language for creating web pages.",
+          quiz: {
+            question: "What does HTML stand for?",
+            options: [
+              "HyperText Markup Language",
+              "HighText Machine Language",
+              "HyperTransfer Markup Language",
+              "HyperTool Machine Language",
+            ],
+            correct: "HyperText Markup Language",
+          },
+        },
+        {
+          title: "2. HTML Elements",
+          body: "HTML elements are the building blocks of HTML pages. They are represented by tags such as <p>, <a>, <div>, etc.",
+          quiz: {
+            question: "Which tag is used for a paragraph in HTML?",
+            options: ["<a>", "<p>", "<div>", "<span>"],
+            correct: "<p>",
+          },
+        },
+        {
+          title: "3. HTML Attributes",
+          body: "Attributes provide additional information about HTML elements. They are always specified in the start tag.",
+          quiz: {
+            question: "Where are HTML attributes usually specified?",
+            options: ["End tag", "Start tag", "Outside the tag", "Inside comments"],
+            correct: "Start tag",
+          },
+        },
+        {
+          title: "4. HTML Headings",
+          body: "HTML headings are defined with the <h1> to <h6> tags. <h1> defines the most important heading.",
+          quiz: {
+            question: "Which HTML tag is used for the largest heading?",
+            options: ["<heading>", "<h6>", "<h1>", "<head>"],
+            correct: "<h1>",
+          },
+        },
+      ];
+
+      function markAttendance() {
+        alert("Attendance marked successfully!");
+      }
+
+      const container = document.getElementById("content-sections");
+
+      function createSection(content, index) {
+        const section = document.createElement("div");
+        section.className = "content-section";
+        if (index !== 0) section.classList.add("disabled");
+        section.id = `section-${index}`;
+
+        const title = document.createElement("h2");
+        title.textContent = content.title;
+
+        const body = document.createElement("p");
+        body.textContent = content.body;
+
+        const quizDiv = document.createElement("div");
+        quizDiv.className = "quiz";
+
+        const question = document.createElement("p");
+        question.textContent = "Quiz: " + content.quiz.question;
+
+        const form = document.createElement("form");
+        form.onsubmit = (e) => e.preventDefault();
+
+        content.quiz.options.forEach((opt) => {
+          const label = document.createElement("label");
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = `quiz-${index}`;
+          radio.value = opt;
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(opt));
+          form.appendChild(label);
+          form.appendChild(document.createElement("br"));
+        });
+
+        const submitBtn = document.createElement("button");
+        submitBtn.textContent = "Submit Answer";
+        submitBtn.type = "button";
+
+        submitBtn.onclick = () => {
+          const selected = form.querySelector("input[type='radio']:checked");
+          if (!selected) {
+            alert("Please select an answer.");
+            return;
+          }
+
+          if (selected.value === content.quiz.correct) {
+            alert("Correct answer!");
+
+            if (index + 1 < contents.length) {
+              const nextSection = document.getElementById(`section-${index + 1}`);
+              nextSection.classList.remove("disabled");
+            } else {
+              markAttendance();
+            }
+
+            submitBtn.disabled = true;
+          } else {
+            alert("Incorrect answer. Try again.");
+          }
+        };
+
+        quizDiv.appendChild(question);
+        quizDiv.appendChild(form);
+        quizDiv.appendChild(submitBtn);
+
+        section.appendChild(title);
+        section.appendChild(body);
+        section.appendChild(quizDiv);
+
+        container.appendChild(section);
+      }
+
+      contents.forEach((content, index) => {
+        createSection(content, index);
+      });
+    </script>
+  </body>
+</html>
