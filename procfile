@@ -1,1 +1,1 @@
-web: waitress-serve --host=0.0.0.0 --port=8080 Main:app
+web: waitress-serve --host=LMS --port=$PORT main:app
