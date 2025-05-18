@@ -499,4 +499,4 @@ if __name__ == '__main__':
     # if not os.path.exists(DATABASE):
     init_db()
     port = int(os.environ.get("PORT", 8080))
-    app.run(host="LMS", port=port)
+    app.run(host="0.0.0.0", port=port)
